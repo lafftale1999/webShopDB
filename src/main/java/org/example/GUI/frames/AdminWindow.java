@@ -151,7 +151,7 @@ public class AdminWindow extends JFrame {
             Integer customerId_i = helper.parseInt(customerId);
             String category_s = (category == null || category.isBlank()) ? null : category.trim();
             String size_s = (size == null || size.isBlank()) ? null : size.trim();
-            String color_s = (color == null || size.isBlank()) ? null : color.trim();
+            String color_s = (color == null || color.isBlank()) ? null : color.trim();
 
             return DBConnection.orderQuery(orderId_i, customerId_i, category_s, size_s, color_s);
 
