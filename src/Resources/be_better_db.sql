@@ -108,10 +108,22 @@ CREATE TABLE product_category_map (
 );
 
 -- >>>>>>>>>> INDEXES <<<<<<<<<
-CREATE INDEX ix_product_name        ON product(name); -- Good for example search bar request for finding products
-CREATE INDEX ix_stock_unit_product  ON stock_unit(product_id); -- faster lookup of products from stock unit
-CREATE INDEX ix_order_customer      ON order_information(customer_id); -- faster look up for customer information
-CREATE INDEX ix_opm_order           ON order_product_map(order_id); -- faster look up on orders
+-- In a real world application for a webb database, a customer is more likely to search on product names.
+CREATE INDEX ix_product_name ON product(name);
+
+-- Since we use the stock_unit to uniquely identify products, there will be a lot of instances
+-- where we need to look up the product based on the stock_unit.product_id. This both speeds up
+-- the lookup and joins.
+CREATE INDEX ix_stock_unit_product ON stock_unit(product_id);
+
+-- It is likely a customer registered on our website will use their mail
+-- for identifying. This column demands unique email adresses and
+-- speeds up the process.
+CREATE INDEX ix_customer_mail ON customer(mail);
+
+-- To find the specific order lines of the products we use order_product_map.order_id,
+-- therefore we create an index to speed up the process of related rows.
+CREATE INDEX ix_opm_order ON order_product_map(order_id); -- faster look up on orders
 
 -- ====== REFERENCE DATA ======
 INSERT INTO brand (name) VALUES
