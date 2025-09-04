@@ -29,7 +29,6 @@ CREATE TABLE country (
 );
 
 -- >>>>>>>>>> ENTITIES <<<<<<<<<
--- Product
 CREATE TABLE product (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -41,7 +40,6 @@ CREATE TABLE product (
     FOREIGN KEY (brand_id) REFERENCES brand(id)
 );
 
--- Stock Unit
 CREATE TABLE stock_unit (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	quantity INT NOT NULL,
@@ -54,7 +52,6 @@ CREATE TABLE stock_unit (
     UNIQUE(product_id, color_id, size_id)
 );
 
--- Customer
 CREATE TABLE customer (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(50) NOT NULL,
@@ -72,10 +69,9 @@ CREATE TABLE address (
     city VARCHAR(100) NOT NULL,
     country_id INT NOT NULL,
     FOREIGN KEY (country_id) REFERENCES country(id),
-    FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE
+    FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE -- If the customer is deleted, all of their personal information should be too.
 );
 
--- Orders
 CREATE TABLE order_information (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     status ENUM('unpaid', 'paid', 'shipped', 'received') NOT NULL,
@@ -112,10 +108,10 @@ CREATE TABLE product_category_map (
 );
 
 -- >>>>>>>>>> INDEXES <<<<<<<<<
-CREATE INDEX ix_product_name        ON product(name);
-CREATE INDEX ix_stock_unit_product  ON stock_unit(product_id);
-CREATE INDEX ix_order_customer      ON order_information(customer_id);
-CREATE INDEX ix_opm_order           ON order_product_map(order_id);
+CREATE INDEX ix_product_name        ON product(name); -- Good for example search bar request for finding products
+CREATE INDEX ix_stock_unit_product  ON stock_unit(product_id); -- faster lookup of products from stock unit
+CREATE INDEX ix_order_customer      ON order_information(customer_id); -- faster look up for customer information
+CREATE INDEX ix_opm_order           ON order_product_map(order_id); -- faster look up on orders
 
 -- ====== REFERENCE DATA ======
 INSERT INTO brand (name) VALUES
@@ -293,4 +289,4 @@ INSERT INTO order_product_map (order_id, stock_id, quantity, unit_price_snapshot
   (10, 14, 1,  899.00, 0.25, 1123.75),
   (10, 12, 1,  349.00, 0.25,  436.25);
 
-SELECT * FROM stock_unit;
+SELECT * FROM order_information;
