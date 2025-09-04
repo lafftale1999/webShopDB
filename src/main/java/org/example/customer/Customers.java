@@ -3,10 +3,14 @@ package org.example.customer;
 import java.util.ArrayList;
 
 public class Customers {
-    ArrayList<Customer> customers = new ArrayList<>();
+    private ArrayList<Customer> customers = new ArrayList<>();
 
     public Customers() {
 
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
     }
 
     public Customer findCustomerByID(int id) {
